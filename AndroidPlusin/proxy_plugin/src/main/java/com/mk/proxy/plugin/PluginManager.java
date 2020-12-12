@@ -21,6 +21,7 @@ public class PluginManager {
     private DexClassLoader loader;
     private Resources resources;
     public String pluginActivity;
+    private Context context;
 
     private PluginManager(){}
     // 创建单例
@@ -31,18 +32,20 @@ public class PluginManager {
         return pluginManager;
     }
 
+    public void setContext(Context context){
+        this.context = context;
+    }
+
     // 加载已经下载好的插件
-    public void loadPlugin(@org.jetbrains.annotations.NotNull Context activity){
-        String pluginName = "plugin.apk";
+    public void loadPlugin(String  pluginName){
         //创建一个私有的路径，/data/data/包名/plugin
-        File pluginDir = activity.getDir("plugin", activity.MODE_PRIVATE);
+        File pluginDir = context.getDir("plugin", Context.MODE_PRIVATE);
         String pluginPath = new File(pluginDir, pluginName).getAbsolutePath();
 
-        File dexOutDir = activity.getDir("dex", activity.MODE_PRIVATE);
-        loader = new DexClassLoader(pluginPath, dexOutDir.getAbsolutePath(), null, activity.getClassLoader());
+        loader = new DexClassLoader(pluginPath, pluginDir.getAbsolutePath(), null, context.getClassLoader());
 
         //通过PackageManager 获取所有 activity
-        PackageManager packageManager = activity.getPackageManager();
+        PackageManager packageManager = context.getPackageManager();
         PackageInfo packageInfo = packageManager.getPackageArchiveInfo(pluginPath, PackageManager.GET_ACTIVITIES);
         //取所有activity中第一个activity， 是AndroidManifest.xml 中第一个节点的activity， 必须强制规定这个
         pluginActivity = packageInfo.activities[0].name;
@@ -56,7 +59,7 @@ public class PluginManager {
             addAssetPathMethod.setAccessible(true);
             addAssetPathMethod.invoke(assetManager, pluginPath);
             //创建 resources
-            resources = new Resources(assetManager, activity.getResources().getDisplayMetrics(), activity.getResources().getConfiguration());
+            resources = new Resources(assetManager, context.getResources().getDisplayMetrics(), context.getResources().getConfiguration());
 
         } catch (Exception e) {
             e.printStackTrace();

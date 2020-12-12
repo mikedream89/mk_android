@@ -9,6 +9,7 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        PluginManager.getInstance().loadPlugin(this.getApplicationContext());
+        PluginManager.getInstance().setContext(this.getApplicationContext());
+        PluginManager.getInstance().loadPlugin("plugin.apk");
     }
 }
