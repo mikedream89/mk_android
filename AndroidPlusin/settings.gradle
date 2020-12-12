@@ -1,0 +1,4 @@
+include ':proxy_plugin'
+include ':login'
+include ':app'
+rootProject.name = "AndroidPlusin"
