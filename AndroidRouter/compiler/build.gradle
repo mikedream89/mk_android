@@ -1,0 +1,16 @@
+apply plugin: 'java-library'
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation project(':annotation')
+
+    annotationProcessor 'com.google.auto.service:auto-service:1.0-rc7'
+    compileOnly 'com.google.auto.service:auto-service-annotations:1.0-rc7'
+
+    implementation 'com.squareup:javapoet:1.9.0'
+}
+
+sourceCompatibility = "1.8"
+targetCompatibility = "1.8"
+
+apply from: 'gradle_push.gradle'

@@ -1,0 +1,89 @@
+def isDebug = rootProject.ext.isDebugType
+if (isDebug) {
+    apply plugin: 'com.android.application'
+} else {
+    apply plugin: 'com.android.library'
+}
+//./gradlew :moduleshop:assembleRelease
+//./gradlew :moduleshop:assembleDebug
+android {
+
+    compileSdkVersion  rootProject.ext.android.compileSdkVersion
+    buildToolsVersion  rootProject.ext.android.buildToolsVersion
+
+    sourceSets {
+        main {
+            if (isDebug) {
+                manifest.srcFile 'src/main/debug/AndroidManifest.xml'
+            } else {
+                manifest.srcFile 'src/main/AndroidManifest.xml'
+            }
+        }
+    }
+    defaultConfig {
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
+        if (!isDebug) {
+            resourcePrefix 'shop_'
+        }
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath true
+            }
+        }
+    }
+
+    signingConfigs {
+        config {
+            storeFile file("./src/main/doc/test_realese.jks")
+            keyAlias "test"
+            storePassword "123456"
+            keyPassword "123456"
+        }
+        debug {
+            storeFile file("./src/main/doc/debug.jks")
+            keyAlias "debug"
+            storePassword "123456"
+            keyPassword "123456"
+        }
+    }
+
+    buildTypes {
+        release {
+            if (isDebug) {
+                signingConfig signingConfigs.config
+            }
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "boolean", "IS_DEBUG_TYPE", project.is_debug_type
+        }
+        debug {
+            if (!isDebug) {
+                signingConfig signingConfigs.debug
+            }
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "boolean", "IS_DEBUG_TYPE", project.is_debug_type
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation rootProject.ext.dependencies.supportv7
+    implementation rootProject.ext.dependencies.constraintlayout
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:runner:1.1.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
+    api project(':modulebase')
+}
+
+preBuild {
+    String cmd = "sh inrouter/maker/route.sh " + project.getName()
+    def cmdResult = cmd.execute().text.trim()
+    println cmdResult
+}

@@ -1,0 +1,37 @@
+
+ext {
+    android = [
+            applicationId:"com.joybar.androidrouter",
+            compileSdkVersion: 28,
+            targetSdkVersion : 28,
+            minSdkVersion    : 14,
+            buildToolsVersion: "28.0.3",
+            versionCode:6,
+            versionName:"1.2.1"
+    ]
+
+
+    dependencies = [
+            supportv4 : "com.android.support:support-v4:28.1.0",
+            supportv7 : 'androidx.appcompat:appcompat:1.0.0',
+            recyclerviewv7 : 'com.android.support:recyclerview-v7:28.1.0',
+            constraintlayout : 'androidx.constraintlayout:constraintlayout:1.1.3'
+    ]
+
+    staging = [
+            versionCode:348,
+            versionName:'"3.0.4"',
+
+    ]
+    production = [
+            versionCode:190,
+            versionName:'"3.0.3"'
+    ]
+
+    isDebugType = false //module
+    isPrintLog= false
+
+}
+project.ext.set("is_debug_type",  "false") //主APP
+project.ext.set("is_print_log", "false")
+
