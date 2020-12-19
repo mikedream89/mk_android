@@ -8,15 +8,18 @@ import com.mk.proxy.plugin.BaseActivity;
 
 public class LoginActivity extends BaseActivity {
 
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        super.attach(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         findViewById(R.id.login).setOnClickListener(v -> {
 //            Intent intent = new Intent();
 //            intent.setClass(that, TwoActivity.class);
-            startActivity(new Intent(that, TwoActivity.class));
+//            startActivity(new Intent(that, TwoActivity.class));
         });
     }
 

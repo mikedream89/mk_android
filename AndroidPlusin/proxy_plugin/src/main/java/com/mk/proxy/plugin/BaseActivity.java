@@ -7,42 +7,44 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 
-public class BaseActivity implements ProxyActivityInterface {
+import androidx.appcompat.app.AppCompatActivity;
+
+public class BaseActivity extends AppCompatActivity implements ProxyActivityInterface {
     protected Activity that;
 
     @Override
     public void attach(Activity proxyActivity) {
-        this.that = proxyActivity;
+        this.that = null;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
+        super.onCreate(savedInstanceState);
     }
 
     @Override
     public void onStart() {
-
+        super.onStart();
     }
 
     @Override
     public void onResume() {
-
+        super.onResume();
     }
 
     @Override
     public void onPause() {
-
+        super.onPause();
     }
 
     @Override
     public void onStop() {
-
+        super.onStop();
     }
 
     @Override
     public void onDestroy() {
-
+        super.onDestroy();
     }
 
     public <T extends View> T findViewById(int id) {
@@ -61,7 +63,7 @@ public class BaseActivity implements ProxyActivityInterface {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -82,6 +84,10 @@ public class BaseActivity implements ProxyActivityInterface {
     }
 
     public Resources getResources() {
-        return that.getResources();
+        if(that == null){
+            return super.getResources();
+        } else {
+            return that.getResources();
+        }
     }
 }

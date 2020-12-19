@@ -22,3 +22,6 @@ android 组件化开发
     2. 注解, 注解处理器
     3. 使用livedata 数据传递
     4. 
+
+4. java代码设计模式
+    1. filter, 过滤器, 发送request 过滤顺序: A->B, 返回response 过滤顺序是B->A , 主要是递归的思想 
