@@ -4,8 +4,9 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-//动态代理
+//动态代理，最终是通过asm 修改字节码（class文件）
 //应用场景：例如Retrofit网络加载框架、Spring中AOP的实现等。
+//这种动态代理的缺陷是需要代理的类必须实现接口
 public class Demo2 {
     public static void main(String[] args) {
         Test2 test2 = new Test2();
